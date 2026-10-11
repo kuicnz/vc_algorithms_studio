@@ -12,7 +12,7 @@ const state = {
   playing: false, timer: null, error: null, dialogType: 'about',
   language: languages.some(item => item.id === savedLanguage) ? savedLanguage : 'javascript',
   locale: readPreference('algorithm-studio-locale', 'zh') === 'en' ? 'en' : 'zh',
-  theme: readPreference('algorithm-studio-theme', 'light') === 'dark' ? 'dark' : 'light',
+  theme: readPreference('algorithm-studio-theme', 'dark') === 'light' ? 'light' : 'dark',
 };
 const sound = new PixelSound(readPreference('algorithm-studio-sound', 'on') !== 'off');
 const t = (key, params) => translate(state.locale, key, params);

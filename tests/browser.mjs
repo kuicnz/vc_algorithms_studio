@@ -85,6 +85,9 @@ try {
     await new Promise(resolveWait => setTimeout(resolveWait, 100));
   }
   assert.equal(await evaluate('document.querySelectorAll(".algorithm-card").length'), 28);
+  assert.equal(await evaluate('document.documentElement.dataset.theme'), 'dark', 'First visit should use the dark theme');
+  await evaluate(`document.getElementById('theme-toggle').click()`);
+  assert.equal(await evaluate('document.documentElement.dataset.theme'), 'light');
   await evaluate(`window.__audioStarted=0;const audio=window.AudioContext||window.webkitAudioContext;if(audio){const create=audio.prototype.createOscillator;audio.prototype.createOscillator=function(...args){window.__audioStarted++;return create.apply(this,args)}}`);
   await evaluate(`document.querySelector('[data-category="sorting"]').click()`);
   assert.equal(await evaluate('document.querySelectorAll(".algorithm-card").length'), 8);

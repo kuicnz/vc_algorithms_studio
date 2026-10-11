@@ -13,7 +13,7 @@
 - 主页使用细长列表，按五个类别浏览、按中文或英文名称搜索算法，支持直接访问算法链接，例如 `/#quick`。
 - 代码在左、动画在右；每个步骤高亮对应操作的代码行，循环和分支会回到实际对应的位置。
 - 播放、暂停、上一步、下一步、重置、拖动进度条，以及 0.5× / 1× / 2× / 4× 调速。播放完成后保留结果 1.2 秒，再自动从头重播；暂停、手动拖动或离开页面会停止循环。
-- 右上角随时切换白色 / 黑色主题、中文 / English 界面和音效。主题、界面语言、代码语言切换均保留当前进度；界面语言还会翻译算法简介、步骤说明、表格标签、帮助和输入错误。
+- 首次打开默认使用黑色主题，之后记住用户选择。右上角随时切换白色 / 黑色主题、中文 / English 界面和音效。主题、界面语言、代码语言切换均保留当前进度；界面语言还会翻译算法简介、步骤说明、表格标签、帮助和输入错误。
 - Web Audio 合成选择、点击、代码步骤与完成音效；首次点击或键盘交互后启用，可随时静音。无需音频下载。
 - 切换 JavaScript、TypeScript、Python、Java、C、C++、C#、Go、Rust、Swift，保留当前演示进度。语言偏好会在浏览器允许时保存到本地。
 - 修改数组、查找目标、字符串、背包物品、硬币与金额，或使用随机示例。部分图算法可修改起点。
@@ -122,7 +122,7 @@ CHROME_BIN=/path/to/chromium npm run test:browser
 
 ### Overview
 
-Algorithm Studio is a dependency-free static website for exploring **28 algorithms in 10 programming languages**. The code pane on the left and the visualization on the right stay synchronized as you step through an algorithm. The game-inspired pixel interface uses a compact list catalogue, hard borders, pixel motifs, and a bundled local pixel font. Top-right controls switch light/dark themes, Chinese/English interface language, and sound at any time.
+Algorithm Studio is a dependency-free static website for exploring **28 algorithms in 10 programming languages**. The code pane on the left and the visualization on the right stay synchronized as you step through an algorithm. The game-inspired pixel interface uses a compact list catalogue, hard borders, pixel motifs, and a bundled local pixel font. The first visit defaults to the dark theme; subsequent visits remember your choice. Top-right controls switch light/dark themes, Chinese/English interface language, and sound at any time.
 
 Browse five categories, search Chinese or English names, choose a language, then play, pause, step backward or forward, reset, seek on the timeline, or adjust playback speed. Editable inputs and random examples let you explore different cases. Array bars show comparisons and writes; graphs show traversal, distances, and spanning trees; dynamic programming shows state tables and dependencies. Playback holds the completed result for 1.2 seconds and automatically loops. Pause, seeking, navigation, or hiding the browser tab stops playback. The interface includes code copying, keyboard navigation, focus mode, responsive layouts, and reduced-motion support. Selection, click, execution, and completion sounds are synthesized using Web Audio after a user gesture; mute them at the top right.
 

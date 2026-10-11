@@ -80,15 +80,16 @@ try {
   await command('Emulation.setDeviceMetricsOverride', { width: 1440, height: 1050, deviceScaleFactor: 1, mobile: false });
   await command('Page.navigate', { url: base });
   for (let attempt = 0; attempt < 100; attempt++) {
-    if (await evaluate('document.documentElement.dataset.ready === "true"')) break;
+    if (await evaluate('document.documentElement?.dataset.ready === "true"')) break;
     if (attempt === 99) throw new Error('Application did not initialize');
     await new Promise(resolveWait => setTimeout(resolveWait, 100));
   }
-  assert.equal(await evaluate('document.querySelectorAll(".algorithm-card").length'), 24);
+  assert.equal(await evaluate('document.querySelectorAll(".algorithm-card").length'), 28);
+  await evaluate(`window.__audioStarted=0;const audio=window.AudioContext||window.webkitAudioContext;if(audio){const create=audio.prototype.createOscillator;audio.prototype.createOscillator=function(...args){window.__audioStarted++;return create.apply(this,args)}}`);
   await evaluate(`document.querySelector('[data-category="sorting"]').click()`);
   assert.equal(await evaluate('document.querySelectorAll(".algorithm-card").length'), 8);
   await evaluate(`document.querySelector('[data-category="all"]').click(); const search = document.getElementById('algorithm-search'); search.value='binary'; search.dispatchEvent(new Event('input'));`);
-  assert.equal(await evaluate('document.querySelectorAll(".algorithm-card").length'), 1);
+  assert.equal(await evaluate('document.querySelectorAll(".algorithm-card").length'), 2);
   await evaluate(`document.querySelector('.algorithm-card').click()`);
   await new Promise(resolveWait => setTimeout(resolveWait, 50));
   assert.equal(await evaluate('document.getElementById("demo-title").textContent'), '二分搜索');
@@ -124,8 +125,8 @@ try {
     }
     return { combinations, snapshots };
   })()`);
-  assert.equal(matrix.combinations, 240);
-  assert.equal(matrix.snapshots, 720);
+  assert.equal(matrix.combinations, 280);
+  assert.equal(matrix.snapshots, 840);
   console.log(`PASS: ${matrix.combinations} algorithm/language combinations, ${matrix.snapshots} synchronized UI snapshots`);
 
   await evaluate(`location.hash='bubble'`);
@@ -195,8 +196,76 @@ try {
   await command('Input.dispatchKeyEvent', { type: 'keyUp', key: 'r', code: 'KeyR', windowsVirtualKeyCode: 82 });
   assert.equal(await evaluate('Number(document.getElementById("timeline").value)'), 0);
   console.log('PASS: all input types, empty strings, zero capacity, missing target, unreachable amount, graph start, keyboard shortcuts');
+  assert.ok(await evaluate('window.__audioStarted > 0'), 'A real user gesture did not produce Web Audio tones');
+
+  // Finish-and-repeat behavior: use a short trace and keep the final frame visible.
+  await evaluate(`location.hash='fibonacci'`);
+  await new Promise(resolveWait => setTimeout(resolveWait, 40));
+  await evaluate(`document.getElementById('toggle-input').click();document.querySelector('input[name="n"]').value='0';document.getElementById('input-panel').requestSubmit();document.getElementById('speed-select').value='4';document.getElementById('play-button').click()`);
+  await new Promise(resolveWait => setTimeout(resolveWait, 280));
+  assert.equal(await evaluate('document.getElementById("stage-status").textContent'), '完成 · 即将重播');
+  assert.equal(await evaluate('document.getElementById("play-button").textContent'), 'Ⅱ 暂停');
+  // Poll for restart rather than relying on a single frame's exact timing.
+  let replayed = false;
+  for (let attempt = 0; attempt < 25; attempt++) {
+    if (await evaluate('Number(document.getElementById("timeline").value) === 0')) { replayed = true; break; }
+    await new Promise(resolveWait => setTimeout(resolveWait, 70));
+  }
+  assert.ok(replayed, 'Completed playback did not replay');
+  await evaluate(`document.getElementById('play-button').click()`);
+  const replayPaused = await evaluate('document.getElementById("timeline").value');
+  await new Promise(resolveWait => setTimeout(resolveWait, 1300));
+  assert.equal(await evaluate('document.getElementById("timeline").value'), replayPaused, 'Pause did not cancel replay');
+  console.log('PASS: automatic replay with completion hold and cancellation');
+
+  await evaluate(`location.hash='astar'`);
+  await new Promise(resolveWait => setTimeout(resolveWait, 40));
+  await evaluate(`document.getElementById('next-button').click();document.getElementById('toggle-input').click();document.querySelector('select[name="goal"]').value='G'`);
+  const preservedStep = await evaluate('document.getElementById("timeline").value');
+  const preservedCode = await evaluate('document.getElementById("code-lines").innerHTML');
+  await evaluate(`document.getElementById('theme-toggle').click();document.getElementById('ui-language-toggle').click()`);
+  assert.equal(await evaluate('document.documentElement.dataset.theme'), 'dark');
+  assert.equal(await evaluate('document.documentElement.lang'), 'en');
+  assert.equal(await evaluate('document.getElementById("timeline").value'), preservedStep);
+  assert.equal(await evaluate('document.getElementById("code-lines").innerHTML'), preservedCode);
+  assert.equal(await evaluate('document.querySelector("select[name=goal]").value'), 'G', 'Locale switch discarded pending input');
+  assert.equal(await evaluate('document.getElementById("play-button").textContent'), '▶ Play');
+  await evaluate(`document.getElementById('sound-toggle').click()`);
+  assert.equal(await evaluate('document.getElementById("sound-toggle").getAttribute("aria-pressed")'), 'false');
+  const mutedCount = await evaluate('window.__audioStarted');
+  await evaluate(`document.getElementById('next-button').click()`);
+  assert.equal(await evaluate('window.__audioStarted'), mutedCount, 'Muted interaction still created audio');
+
+  const englishSteps = await evaluate(`(async () => {
+    const { algorithms } = await import('/js/catalog.js');
+    let checked = 0;
+    for (const algorithm of algorithms) {
+      location.hash = algorithm.id;
+      await new Promise(resolve => setTimeout(resolve, 12));
+      for (const position of [Math.floor(Number(document.getElementById('timeline').max)/2), Number(document.getElementById('timeline').max)]) {
+        const slider = document.getElementById('timeline'); slider.value=String(position); slider.dispatchEvent(new Event('input'));
+        for (const id of ['demo-title','demo-summary','step-description','stage-metrics','visualization','stage-supplement','input-hint','breadcrumb','window-status']) {
+          if (/[\u3400-\u9fff]/.test(document.getElementById(id).textContent)) throw new Error('Chinese text in English UI: '+algorithm.id+'/'+id+': '+document.getElementById(id).textContent);
+        }
+        checked++;
+      }
+    }
+    return checked;
+  })()`);
+  assert.equal(englishSteps, 56);
+  await evaluate('delete document.documentElement.dataset.ready');
+  await command('Page.reload');
+  for (let attempt = 0; attempt < 100; attempt++) {
+    if (await evaluate('document.documentElement?.dataset.ready === "true"')) break;
+    await new Promise(resolveWait => setTimeout(resolveWait, 40));
+  }
+  assert.equal(await evaluate('document.documentElement.dataset.theme'), 'dark');
+  assert.equal(await evaluate('document.documentElement.lang'), 'en');
+  assert.equal(await evaluate('document.getElementById("sound-toggle").getAttribute("aria-pressed")'), 'false');
+  console.log('PASS: light/dark and Chinese/English controls, 56 English states, preserved progress/drafts, persisted sound/theme/locale');
 
   const screenshot = async name => {
+    await new Promise(resolveWait => setTimeout(resolveWait, 200));
     const captured = await command('Page.captureScreenshot', { format: 'png', captureBeyondViewport: false });
     await writeFile(`${artifacts}/${name}.png`, Buffer.from(captured.data, 'base64'));
   };
@@ -216,6 +285,26 @@ try {
     assert.ok(await evaluate('document.documentElement.scrollWidth <= window.innerWidth'), `${id} overflows mobile viewport`);
   }
   await screenshot('mobile-demo');
+  await command('Emulation.setDeviceMetricsOverride', { width: 1440, height: 1050, deviceScaleFactor: 1, mobile: false });
+  await evaluate(`location.hash='astar'`);
+  await new Promise(resolveWait => setTimeout(resolveWait, 50));
+  await screenshot('desktop-dark-astar');
+  await evaluate(`location.hash='library'`);
+  await new Promise(resolveWait => setTimeout(resolveWait, 50));
+  await screenshot('desktop-dark-library');
+  await evaluate(`document.getElementById('theme-toggle').click();document.getElementById('ui-language-toggle').click()`);
+  await screenshot('desktop-light-library');
+  await command('Emulation.setDeviceMetricsOverride', { width: 375, height: 812, deviceScaleFactor: 1, mobile: true });
+  for (const locale of ['zh-CN','en']) {
+    if (await evaluate('document.documentElement.lang') !== locale) await evaluate(`document.getElementById('ui-language-toggle').click()`);
+    for (const theme of ['light','dark']) {
+      if (await evaluate('document.documentElement.dataset.theme') !== theme) await evaluate(`document.getElementById('theme-toggle').click()`);
+      assert.ok(await evaluate('document.documentElement.scrollWidth <= window.innerWidth'), `Mobile overflow: ${locale}/${theme}`);
+      assert.ok(await evaluate(`['theme-toggle','ui-language-toggle','sound-toggle'].every(id=>{ const box=document.getElementById(id).getBoundingClientRect();return box.width>0 && box.left>=0 && box.right<=innerWidth })`), 'Mobile utilities are hidden or unreachable');
+    }
+  }
+  await screenshot('mobile-dark-english-library');
+
   assert.deepEqual(errors, [], `Browser console errors: ${errors.join('\n')}`);
   console.log('PASS: desktop/mobile layouts and no browser errors');
   console.log(`Screenshots: ${artifacts}`);

@@ -1,71 +1,78 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-theme="light">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#c1c5d4">
-  <meta name="description" content="24 种常见算法、10 种编程语言：逐行代码与动画同步演示。经典 Macintosh 风格的交互式算法实验室。">
+  <meta name="theme-color" content="#f6f6ef">
+  <meta name="description" content="28 种常见算法、10 种编程语言：逐行代码与动画同步演示。支持白黑主题与中英文界面的像素算法实验室。">
   <title>Algorithm Studio · 算法工作室</title>
-  <link rel="icon" type="image/svg+xml" href="assets/happy-computer.svg">
+  <link rel="icon" type="image/svg+xml" href="assets/pixel-mark.svg">
   <link rel="stylesheet" href="css/styles.css">
   <script type="module" src="js/app.js"></script>
 </head>
 <body>
   <header class="system-bar">
-    <div class="system-brand"><img src="assets/happy-computer.svg" alt="笑脸电脑" width="20" height="22"><strong>Algorithm Studio</strong></div>
-    <nav class="system-menu" aria-label="系统菜单">
-      <button id="menu-library" type="button">算法库</button>
-      <button id="menu-help" type="button">使用说明</button>
-      <button id="menu-about" type="button">关于</button>
+    <div class="system-brand"><img src="assets/pixel-mark.svg" alt="像素标识" data-i18n-alt="pixelMark" width="20" height="22"><strong>Algorithm Studio</strong></div>
+    <nav class="system-menu" aria-label="Navigation">
+      <button id="menu-library" type="button" data-i18n="library">算法库</button>
+      <button id="menu-help" type="button" data-i18n="help">使用说明</button>
+      <button id="menu-about" type="button" data-i18n="about">关于</button>
     </nav>
-    <div class="system-right"><span class="system-status"><i></i> 本地演示</span><time id="clock"></time></div>
+    <div class="system-right">
+      <button id="theme-toggle" class="utility-button" type="button" data-i18n-title="themeHint" aria-pressed="false">☀ 白色</button>
+      <button id="ui-language-toggle" class="utility-button" type="button" data-i18n-title="languageHint" aria-label="切换中文 / English">中文 / EN</button>
+      <button id="sound-toggle" class="utility-button" type="button" data-i18n-title="soundHint" aria-pressed="true">♪ 音效开</button>
+      <time id="clock"></time>
+    </div>
   </header>
 
   <main class="desktop">
-    <div class="desktop-heading"><span>YOUR PERSONAL ALGORITHM LAB</span><span>Est. 1984 spirit / 2026 craft</span></div>
-    <section class="studio-window" aria-label="算法工作室">
+    <div class="desktop-heading"><span data-i18n="desktopTag">YOUR ALGORITHM ADVENTURE</span><span data-i18n="desktopEdition">PIXEL EDITION / LEVEL 02</span></div>
+    <section class="studio-window" data-i18n-label="studio" aria-label="算法工作室">
       <header class="window-titlebar">
-        <button class="window-control" id="window-home" type="button" title="返回算法库" aria-label="返回算法库"></button>
+        <button class="window-control" id="window-home" type="button" data-i18n-title="home" data-i18n-label="home" title="返回算法库" aria-label="返回算法库"></button>
         <div class="title-stripes" aria-hidden="true"></div>
-        <h1><img src="assets/happy-computer.svg" width="17" height="20" alt="">Algorithm Studio</h1>
+        <h1><img src="assets/pixel-mark.svg" width="17" height="20" alt="">Algorithm Studio</h1>
         <div class="title-stripes" aria-hidden="true"></div>
-        <button class="window-zoom" id="window-focus" type="button" title="切换专注模式" aria-label="切换专注模式" aria-pressed="false"></button>
+        <button class="window-zoom" id="window-focus" type="button" data-i18n-title="focus" data-i18n-label="focus" title="切换专注模式" aria-label="切换专注模式" aria-pressed="false"></button>
       </header>
-      <div class="window-toolbar"><span id="breadcrumb">工作室 / 算法库</span><span class="toolbar-note">24 algorithms · 10 languages</span></div>
+      <div class="window-toolbar"><span id="breadcrumb">工作室 / 算法库</span><span id="catalog-info" class="toolbar-note">28 算法 · 10 语言</span></div>
 
       <div id="library-view" class="library-layout">
         <aside class="sidebar">
-          <div class="sidebar-title">收藏目录 <span>LIBRARY</span></div>
-          <nav id="category-nav" class="category-nav" aria-label="算法分类"></nav>
-          <div class="sidebar-bottom"><img src="assets/happy-computer.svg" width="44" height="48" alt=""><p>一点一点，<br>理解每一步。</p><span>Think clearly. Step slowly.</span></div>
+          <div class="sidebar-title"><b data-i18n="sidebar">探索目录</b><span>QUEST LOG</span></div>
+          <nav id="category-nav" class="category-nav" aria-label="Algorithm categories"></nav>
+          <div class="sidebar-bottom"><img src="assets/pixel-mark.svg" width="44" height="48" alt=""><p data-i18n="sidebarMotto">每一步，都是新发现。</p><span>KEEP EXPLORING.</span></div>
         </aside>
         <section class="library-content">
-          <div class="library-intro"><div><div class="eyebrow">WELCOME TO THE STUDIO</div><h2>让算法，<br><em>看得见。</em></h2><p>从第一行代码，到最后一次交换。<br>打开一个算法，跟随它的每一步。</p></div><div class="intro-illustration" aria-hidden="true"><div class="mini-window"><div class="mini-title">A little order in the chaos.</div><div class="mini-bars"><i style="--bar:35%"></i><i style="--bar:60%"></i><i style="--bar:45%"></i><i style="--bar:85%"></i><i style="--bar:70%"></i><i style="--bar:100%"></i></div><div class="mini-caption"><span>01 → 02 → 03</span><span>⌘</span></div></div><span class="illustration-note">Everything has a sequence.</span></div></div>
-          <div class="catalog-toolbar"><div><h3 id="catalog-title">全部算法</h3><span id="catalog-count"></span></div><label class="search-box"><span aria-hidden="true">⌕</span><input id="algorithm-search" type="search" placeholder="搜索名称、类别或英文名…" aria-label="搜索算法"><kbd>/</kbd></label></div>
-          <div id="algorithm-grid" class="algorithm-grid"></div>
-          <div id="empty-state" class="empty-state" hidden>没有找到对应算法。试试“排序”或“binary”。</div>
-          <footer class="library-footer"><span>选择一个算法，开始探索。</span><span>All steps. No black boxes.</span></footer>
+          <div class="library-intro"><div><div class="eyebrow" data-i18n="welcome">PLAYER ONE · 准备探索</div><h2><span data-i18n="heroFirst">解锁算法，</span><br><em data-i18n="heroSecond">从每一步开始。</em></h2><p data-i18n="heroDescription">选择一个算法，跟着代码与动画一起通关。</p></div><div class="pixel-scene" aria-hidden="true"><span class="pixel-star">✦</span><span class="pixel-cloud"></span><div class="pixel-tower"><i style="--bar:30%"></i><i style="--bar:45%"></i><i style="--bar:60%"></i><i style="--bar:80%"></i><i style="--bar:100%"></i></div><span class="pixel-ground"></span></div></div>
+          <div class="catalog-toolbar"><div><h3 id="catalog-title">全部算法</h3><span id="catalog-count"></span></div><label class="search-box"><span aria-hidden="true">⌕</span><input id="algorithm-search" type="search" data-i18n-placeholder="searchPlaceholder" data-i18n-label="searchLabel" placeholder="搜索名称、类别或英文名…" aria-label="搜索算法"><kbd>/</kbd></label></div>
+          <div class="list-header" aria-hidden="true"><span>#</span><span data-i18n="listName">算法名称</span><span class="column-category" data-i18n="listCategory">分类</span><span class="column-summary" data-i18n="listDescription">概要</span><span class="column-complexity" data-i18n="listTime">时间复杂度</span><span>↗</span></div>
+          <div id="algorithm-grid" class="algorithm-list" role="list"></div>
+          <div id="empty-state" class="empty-state" data-i18n="empty" hidden>没有找到对应算法。试试“排序”或“binary”。</div>
+          <footer class="library-footer"><span data-i18n="listFooter">选择一行，进入演示。</span><span data-i18n="listFooterEn">SMALL STEPS. BIG IDEAS.</span></footer>
         </section>
       </div>
 
       <section id="demo-view" class="demo-view" hidden>
-        <header class="demo-header"><button class="classic-button back-button" id="back-button" type="button">← 算法库</button><div class="demo-heading"><div class="eyebrow" id="demo-category"></div><h2 id="demo-title"></h2><p id="demo-summary"></p></div><div class="complexity-badges"><span>时间 <b id="time-complexity"></b></span><span>空间 <b id="space-complexity"></b></span></div></header>
-        <div class="demo-tools"><label class="language-control">代码语言 <select id="language-select" aria-label="代码语言"></select></label><span class="code-note">预设代码 · 与动画同步</span><button class="classic-button" id="toggle-input" type="button" aria-expanded="false" aria-controls="input-panel">修改输入 ▾</button></div>
-        <form id="input-panel" class="input-panel" hidden><div id="input-fields" class="input-fields"></div><div class="input-actions"><button class="classic-button primary" type="submit">应用并重置</button><button class="classic-button" id="randomize-input" type="button">随机示例</button></div><p id="input-error" class="input-error" role="alert"></p><p id="input-hint" class="input-hint"></p></form>
+        <header class="demo-header"><button class="classic-button back-button" id="back-button" type="button">← <span data-i18n="library">算法库</span></button><div class="demo-heading"><div class="eyebrow" id="demo-category"></div><h2 id="demo-title"></h2><p id="demo-summary"></p></div><div class="complexity-badges"><span><span data-i18n="time">时间</span> <b id="time-complexity"></b></span><span><span data-i18n="space">空间</span> <b id="space-complexity"></b></span></div></header>
+        <div class="demo-tools"><label class="language-control"><span data-i18n="codeLanguage">代码语言</span> <select id="language-select" data-i18n-label="codeLanguage" aria-label="代码语言"></select></label><span class="code-note" data-i18n="codeNote">预设代码 · 与动画同步</span><button class="classic-button" id="toggle-input" type="button" aria-expanded="false" aria-controls="input-panel">修改输入 ▾</button></div>
+        <form id="input-panel" class="input-panel" hidden><div id="input-fields" class="input-fields"></div><div class="input-actions"><button class="classic-button primary" type="submit" data-i18n="apply">应用并重置</button><button class="classic-button" id="randomize-input" type="button" data-i18n="random">随机示例</button></div><p id="input-error" class="input-error" role="alert"></p><p id="input-hint" class="input-hint"></p></form>
         <div class="demo-workspace">
-          <section class="code-pane" aria-label="演示代码"><div class="pane-header"><span><i class="pane-icon">{ }</i><b id="code-filename">algorithm.js</b></span><button class="copy-button" id="copy-code" type="button">复制代码</button></div><div id="code-scroller" class="code-scroller"><pre id="code-lines" class="code-lines" tabindex="0" aria-label="演示代码，当前执行行已高亮"></pre></div><div class="pane-footer"><span id="code-location">等待开始</span><span id="language-caption">JavaScript</span></div></section>
-          <section class="animation-pane" aria-label="算法动画"><div class="pane-header"><span><i class="live-dot"></i><b>执行现场</b></span><span id="animation-type"></span></div><div class="stage-meta"><span id="stage-status">准备就绪</span><div id="stage-metrics" class="stage-metrics"></div></div><div id="visualization" class="visualization"></div><div id="stage-supplement" class="stage-supplement"></div><div class="visual-legend"><span><i class="legend-active"></i>当前操作</span><span><i class="legend-secondary"></i>参考 / 候选</span><span><i class="legend-done"></i>已确认</span></div><div class="step-explanation"><span id="step-number">STEP 001</span><p id="step-description" aria-live="polite"></p></div></section>
+          <section class="code-pane" data-i18n-label="codePane" aria-label="演示代码"><div class="pane-header"><span><i class="pane-icon">{ }</i><b id="code-filename">algorithm.js</b></span><button class="copy-button" id="copy-code" type="button" data-i18n="copy">复制代码</button></div><div id="code-scroller" class="code-scroller"><pre id="code-lines" class="code-lines" tabindex="0" data-i18n-label="codeAria" aria-label="演示代码，当前执行行已高亮"></pre></div><div class="pane-footer"><span id="code-location">等待开始</span><span id="language-caption">JavaScript</span></div></section>
+          <section class="animation-pane" data-i18n-label="animationPane" aria-label="算法动画"><div class="pane-header"><span><i class="live-dot"></i><b data-i18n="live">执行现场</b></span><span id="animation-type"></span></div><div class="stage-meta"><span id="stage-status">准备就绪</span><div id="stage-metrics" class="stage-metrics"></div></div><div id="visualization" class="visualization"></div><div id="stage-supplement" class="stage-supplement"></div><div class="visual-legend"><span><i class="legend-active"></i><span data-i18n="active">当前操作</span></span><span><i class="legend-secondary"></i><span data-i18n="secondary">参考 / 候选</span></span><span><i class="legend-done"></i><span data-i18n="done">已确认</span></span></div><div class="step-explanation"><span id="step-number">STEP 001</span><p id="step-description" aria-live="polite"></p></div></section>
         </div>
-        <footer class="player"><div class="playback-buttons"><button class="classic-button icon-button" id="reset-button" type="button" title="重置 (R)" aria-label="重置">↺</button><button class="classic-button icon-button" id="previous-button" type="button" title="上一步 (←)" aria-label="上一步">◀</button><button class="classic-button primary play-button" id="play-button" type="button">▶ 播放</button><button class="classic-button icon-button" id="next-button" type="button" title="下一步 (→)" aria-label="下一步">▶|</button></div><div class="timeline"><input id="timeline" type="range" min="0" max="1" value="0" aria-label="执行进度"><output id="step-counter">1 / 1</output></div><label class="speed-control">速度 <select id="speed-select" aria-label="播放速度"><option value="0.5">0.5×</option><option value="1" selected>1×</option><option value="2">2×</option><option value="4">4×</option></select></label></footer>
-        <div class="keyboard-hints"><span><kbd>Space</kbd> 播放 / 暂停 <kbd>←</kbd><kbd>→</kbd> 单步 <kbd>R</kbd> 重置</span><span>代码是算法示例；切换语言不会改变执行轨迹。</span></div>
+        <footer class="player"><div class="playback-buttons"><button class="classic-button icon-button" id="reset-button" type="button" data-i18n-title="resetHint" data-i18n-label="reset" title="重置 (R)" aria-label="重置">↺</button><button class="classic-button icon-button" id="previous-button" type="button" data-i18n-title="previousHint" data-i18n-label="previous" title="上一步 (←)" aria-label="上一步">◀</button><button class="classic-button primary play-button" id="play-button" type="button">▶ 播放</button><button class="classic-button icon-button" id="next-button" type="button" data-i18n-title="nextHint" data-i18n-label="next" title="下一步 (→)" aria-label="下一步">▶|</button></div><div class="timeline"><input id="timeline" type="range" data-i18n-label="progress" min="0" max="1" value="0" aria-label="执行进度"><output id="step-counter">1 / 1</output></div><label class="speed-control"><span data-i18n="speed">速度</span> <select id="speed-select" data-i18n-label="speed" aria-label="播放速度"><option value="0.5">0.5×</option><option value="1" selected>1×</option><option value="2">2×</option><option value="4">4×</option></select></label></footer>
+        <div class="loop-note" data-i18n="loop">∞ 自动循环重播</div>
+        <div class="keyboard-hints"><span><kbd>Space</kbd> <span data-i18n="keyboard">播放 / 暂停</span> <kbd>←</kbd><kbd>→</kbd> <span data-i18n="stepKey">单步</span> <kbd>R</kbd> <span data-i18n="reset">重置</span></span><span data-i18n="traceNote">切换主题、界面语言或代码语言会保留进度。</span></div>
       </section>
-      <footer class="window-statusbar"><span><i class="status-square"></i><span id="window-status">24 个算法已装入工作室</span></span><span class="resize-grip" aria-hidden="true">◢</span></footer>
+      <footer class="window-statusbar"><span><i class="status-square"></i><span id="window-status">28 个算法已准备就绪</span></span><span class="resize-grip" aria-hidden="true">◢</span></footer>
     </section>
-    <footer class="desktop-footer"><span>VC / ALGORITHMS</span><span>Made for the curious mind.</span><span>Classic by design. Clear by nature.</span></footer>
+    <footer class="desktop-footer"><span>VC / ALGORITHMS</span><span data-i18n="footerMotto">保持好奇，继续闯关。</span><span data-i18n="footerCraft">PIXEL BY PIXEL. STEP BY STEP.</span></footer>
   </main>
 
-  <dialog id="info-dialog" class="classic-dialog"><div class="dialog-titlebar"><span id="dialog-title">关于工作室</span><button id="close-dialog" type="button" aria-label="关闭">×</button></div><div id="dialog-content" class="dialog-content"></div><form method="dialog"><button class="classic-button primary" autofocus>好</button></form></dialog>
+  <dialog id="info-dialog" class="classic-dialog"><div class="dialog-titlebar"><span id="dialog-title">关于工作室</span><button id="close-dialog" type="button" data-i18n-label="close" aria-label="关闭">×</button></div><div id="dialog-content" class="dialog-content"></div><form method="dialog"><button class="classic-button primary" data-i18n="okay" autofocus>好</button></form></dialog>
   <div id="toast" class="toast" role="status" hidden></div>
-  <noscript><div class="noscript">请启用 JavaScript 以使用交互式算法演示。</div></noscript>
+  <noscript><div class="noscript" data-i18n="noScript">请启用 JavaScript 以使用交互式算法演示。</div></noscript>
 </body>
 </html>

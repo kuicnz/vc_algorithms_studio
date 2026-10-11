@@ -57,14 +57,14 @@ function displayedFunction(algorithm) {
   return vm.runInNewContext(`${source}\n${name}`, {}, { timeout: 1000 });
 }
 
-test('catalog contains 24 unique algorithms, 4 categories, and 10 languages', () => {
-  assert.equal(algorithms.length, 24);
-  assert.equal(new Set(algorithms.map(algorithm => algorithm.id)).size, 24);
+test('catalog contains 28 unique algorithms, 5 categories, and 10 languages', () => {
+  assert.equal(algorithms.length, 28);
+  assert.equal(new Set(algorithms.map(algorithm => algorithm.id)).size, 28);
   assert.equal(languages.length, 10);
   for (const category of categories.slice(1)) assert.ok(algorithms.some(algorithm => algorithm.category === category.id));
   assert.equal(filterAlgorithms('sorting', '').length, 8);
-  assert.deepEqual(filterAlgorithms('all', 'BINARY').map(algorithm => algorithm.id), ['binary']);
-  assert.equal(filterAlgorithms('all', '图算法').length, 6);
+  assert.deepEqual(filterAlgorithms('all', 'BINARY').map(algorithm => algorithm.id), ['binary', 'exponential']);
+  assert.equal(filterAlgorithms('all', '图算法').length, 7);
   assert.equal(filterAlgorithms('all', 'nothing matches').length, 0);
 });
 
@@ -145,7 +145,7 @@ test('dynamic programming results match independent references and boundaries', 
 });
 
 test('graph traversals, shortest paths, topological order, and spanning trees', () => {
-  for (const algorithm of algorithms.filter(item => item.category === 'graphs')) {
+  for (const algorithm of algorithms.filter(item => item.category === 'graphs' && item.id !== 'astar')) {
     const ids = algorithm.graph.nodes.map(node => node.id);
     const adjacent = Object.fromEntries(ids.map(id => [id, []]));
     const weighted = Object.fromEntries(ids.map(id => [id, []]));

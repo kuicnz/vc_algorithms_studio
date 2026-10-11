@@ -1,9 +1,9 @@
 {
   "name": "vc-algorithms",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "private": true,
   "type": "module",
-  "description": "Classic Macintosh inspired, synchronized algorithm visualizations",
+  "description": "Pixel game inspired bilingual algorithm visualizations with light and dark themes",
   "scripts": {
     "start": "python3 -m http.server 8000 --bind 0.0.0.0",
     "test": "node --test tests/*.test.js",

@@ -2,14 +2,18 @@ import { sortingAlgorithms } from './algorithms/sorting.js';
 import { searchAlgorithms } from './algorithms/searching.js';
 import { graphAlgorithms } from './algorithms/graphs.js';
 import { dynamicAlgorithms } from './algorithms/dynamic.js';
+import { astarAlgorithms } from './algorithms/astar.js';
+import { greedyAlgorithms } from './algorithms/greedy.js';
+import { algorithmSummary } from './trace-i18n.js';
 
-export const algorithms = [...sortingAlgorithms, ...searchAlgorithms, ...graphAlgorithms, ...dynamicAlgorithms];
+export const algorithms = [...sortingAlgorithms, ...searchAlgorithms, ...graphAlgorithms, ...astarAlgorithms, ...dynamicAlgorithms, ...greedyAlgorithms];
 export const categories = [
   { id: 'all', name: '全部算法', english: 'All algorithms', icon: '▦' },
   { id: 'sorting', name: '排序', english: 'Sorting', icon: '▥' },
   { id: 'searching', name: '搜索', english: 'Searching', icon: '⌕' },
   { id: 'graphs', name: '图算法', english: 'Graphs', icon: '◇' },
   { id: 'dynamic', name: '动态规划', english: 'Dynamic programming', icon: '▤' },
+  { id: 'greedy', name: '贪心', english: 'Greedy', icon: '⚑' },
 ];
 export const languages = [
   { id: 'javascript', name: 'JavaScript', extension: 'js' },
@@ -27,8 +31,9 @@ export const languages = [
 export function filterAlgorithms(category, query) {
   const needle = query.trim().toLocaleLowerCase();
   return algorithms.filter(algorithm => {
-    const categoryName = categories.find(item => item.id === algorithm.category)?.name ?? '';
+    const group = categories.find(item => item.id === algorithm.category);
+    const categoryName = `${group?.name ?? ''} ${group?.english ?? ''}`;
     return (category === 'all' || algorithm.category === category)
-      && `${algorithm.name} ${algorithm.nameEn} ${algorithm.summary} ${categoryName}`.toLocaleLowerCase().includes(needle);
+      && `${algorithm.name} ${algorithm.nameEn} ${algorithm.summary} ${algorithmSummary(algorithm, 'en')} ${categoryName}`.toLocaleLowerCase().includes(needle);
   });
 }
